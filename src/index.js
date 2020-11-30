@@ -1,3 +1,5 @@
+// console.log(PlayerComponent)
+
 const BASE_URL = "http://localhost:3000"
 
 /***** DOM Elements *****/
@@ -29,51 +31,15 @@ const handleNewPlayerSubmit = event => {
   fetch(url, config)
     .then(r => r.json())
     .then(playerObj => {
-      // const playerComponent = new PlayerComponent(playerObj)
+      const playerComponent = new PlayerComponent(playerObj)
       // console.log(playerComponent)
-      // playerComponent.render(playerContainer)
-      renderPlayer(playerObj)
+      playerComponent.render(playerContainer)
+      // renderPlayer(playerObj)
     })
 }
 
 /***** Event Listeners *****/
 newPlayerForm.addEventListener("submit", handleNewPlayerSubmit)
-
-/***** Render Helpers *****/
-const renderPlayer = playerObj => {
-  const playerDiv = document.createElement("div")
-
-  playerDiv.className = "player"
-  playerDiv.dataset.number = playerObj.number
-
-  playerDiv.innerHTML = `
-    <h3>${playerObj.name} (<em>${playerObj.nickname}</em>)</h3>
-    <img src="${playerObj.photo}" alt="${playerObj.name}">
-    <p class="likes">${playerObj.likes} likes</p>
-    <button class="like-button">❤️</button>
-  `
-
-  const likeButton = playerDiv.querySelector(".like-button")
-  likeButton.addEventListener("click", () => {
-    playerObj.likes++
-    const likesPTag = playerDiv.querySelector(".likes")
-    likesPTag.textContent = `${playerObj.likes} likes`
-
-    // fetch
-    const url = `${BASE_URL}/players/${playerObj.id}`
-    const config = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ likes: playerObj.likes })
-    }
-
-    fetch(url, config)
-  })
-
-  playerContainer.append(playerDiv)
-}
 
 /***** Initialize *****/
 const initialize = () => {
@@ -84,10 +50,12 @@ const initialize = () => {
     .then(r => r.json())
     .then(players => {
       players.forEach(playerObj => {
-        // const playerComponent = new PlayerComponent(playerObj)
+        //create new instance of our class
+        const playerComponent = new PlayerComponent(playerObj)
+        //see that instance
         // console.log(playerComponent)
-        // playerComponent.render(playerContainer)
-        renderPlayer(playerObj)
+        playerComponent.render(playerContainer)
+        // renderPlayer(playerObj)
       })
     })
 }
